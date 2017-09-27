@@ -18,13 +18,13 @@ public class ClienteDAO {
 	
 	public String fechar() throws Exception{
 		con.close();
-		return "Fechado com sucesso Juninho!";
+		return "Conexao fechada";
 	}
 	
 	public String gravar(Cliente cli) throws Exception{
 		PreparedStatement estrutura = null;
-		estrutura = con.prepareStatement("INSERT INTO TB_TAP_CLIENT"
-		+ "(NR_CLIENTE,NM_CLIENTE,QT_ESTRELAS)VALUES"
+		estrutura = con.prepareStatement("INSERT INTO cliente"
+		+ "(id_cliente,nome_cliente,estrelas)VALUES"
 		+ "(?,?,?)");
 		estrutura.setInt(1, cli.getNumero() );
 		estrutura.setString(2, cli.getNome() );
@@ -37,7 +37,7 @@ public class ClienteDAO {
 	public Cliente getCliente(int n) throws Exception{
 		Cliente cli = new Cliente();
 		PreparedStatement estrutura = con.prepareStatement
-				("SELECT * FROM TB_TAP_CLIENT WHERE NR_CLIENTE = ?");
+				("SELECT * FROM cliente WHERE id_cliente = ?");
 		estrutura.setInt(1,n);
 		ResultSet resultado = estrutura.executeQuery();
 		
@@ -54,7 +54,7 @@ public class ClienteDAO {
 	
 	public int delete(int num) throws Exception{
 		PreparedStatement estrutura = con.prepareStatement
-				("DELETE FROM TB_TAP_CLIENT WHERE NR_CLIENTE = ?");
+				("DELETE FROM cliente WHERE id_cliente = ?");
 		estrutura.setInt(1, num);
 		int i = estrutura.executeUpdate();
 		estrutura.close();
@@ -63,7 +63,7 @@ public class ClienteDAO {
 	
 	public int uparNivel(int num)throws Exception{
 		PreparedStatement estrutura = con.prepareStatement
-				("UPDATE TB_TAP_CLIENT SET QT_ESTRELAS = QT_ESTRELAS+1 WHERE NR_CLIENTE = ?");
+				("UPDATE cliente SET estrelas = estrelas+1 WHERE id_cliente = ?");
 		estrutura.setInt(1, num);
 		int x = estrutura.executeUpdate();
 		estrutura.close();
@@ -74,7 +74,7 @@ public class ClienteDAO {
 		List<Cliente> lista = new ArrayList<Cliente>();
 		Cliente obj = new Cliente();
 		PreparedStatement estrutura = con.prepareStatement
-				("SELECT * FROM TB_TAP_CLIENT WHERE NM_CLIENTE LIKE ?");
+				("SELECT * FROM cliente WHERE nome_cliente LIKE ?");
 		estrutura.setString(1,n + "%");
 		ResultSet resultado = estrutura.executeQuery();
 		while(resultado.next()){

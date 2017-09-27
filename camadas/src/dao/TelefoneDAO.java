@@ -22,13 +22,14 @@ public class TelefoneDAO {
 	public String gravar(Cliente objeto) throws Exception{
 		for (Telefone t : objeto.getFones()){
 			estrutura = con.prepareStatement
-					("INSERT INTO TB_TAP_TELEFONE "
-					+ "(NR_TELEFONE, NM_OPERADORA, NR_DDD, NR_CLIENTE)"
+					("INSERT INTO telefone "
+					+ "(id_telefone, numero_telefone, operadora, ddd, id_cliente)"
 					+ " VALUES (????)");
-			estrutura.setString(1, t.getNumero());
-			estrutura.setString(2, t.getOperadora());
-			estrutura.setString(3, t.getDdd());
-			estrutura.setInt(4, objeto.getNumero());
+			estrutura.setInt(1, t.getId());
+			estrutura.setString(2, t.getNumero());
+			estrutura.setString(3, t.getOperadora());
+			estrutura.setString(4, t.getDdd());
+			estrutura.setInt(5, objeto.getNumero());
 			estrutura.execute();
 			
 		}

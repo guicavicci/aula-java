@@ -23,8 +23,8 @@ public class ProdutoDAO {
 	
 	public String gravar(Produto prod) throws Exception{
 		PreparedStatement estrutura = null;
-		estrutura = con.prepareStatement("INSERT INTO TB_TAP_PRODUTO"
-		+ "(CODIGO,DESCRICAO,VALOR)VALUES"
+		estrutura = con.prepareStatement("INSERT INTO produto"
+		+ "(id_prod,nome_prod,valor_prod)VALUES"
 		+ "(?,?,?)");
 		estrutura.setInt(1,prod.getCodigo() );
 		estrutura.setString(2, prod.getDescricao() );
@@ -37,7 +37,7 @@ public class ProdutoDAO {
 	public Produto getProduto(int n) throws Exception{
 		Produto prod = new Produto();
 		PreparedStatement estrutura = con.prepareStatement
-				("SELECT * FROM TB_TAP_PRODUTO WHERE CODIGO = ?");
+				("SELECT id_prod, nome_prod, valor_prod FROM produto WHERE id_prod = ?");
 		estrutura.setInt(1,n);
 		ResultSet resultado = estrutura.executeQuery();
 		
@@ -54,7 +54,7 @@ public class ProdutoDAO {
 	
 	public double aumentar(double num) throws Exception{
 		PreparedStatement estrutura = con.prepareStatement
-				("UPDATE TB_TAP_PRODUTO SET VALOR = VALOR + (VALOR* ?)");
+				("UPDATE produto SET valor_prod = valor_prod + (valor_prod* ?)");
 		estrutura.setDouble(1, num/100);
 		double x = estrutura.executeUpdate();
 		estrutura.close();
@@ -65,7 +65,7 @@ public class ProdutoDAO {
 		List<Produto> lista = new ArrayList<Produto>();
 		Produto obj = new Produto();
 		PreparedStatement estrutura = con.prepareStatement
-				("SELECT * FROM TB_TAP_PRODUTO WHERE VALOR = ?");
+				("SELECT id_prod, nome_prod, valor_prod FROM produto WHERE valor_prod = ?");
 		estrutura.setDouble(1,n);
 		ResultSet resultado = estrutura.executeQuery();
 		while(resultado.next()){

@@ -31,7 +31,13 @@ public class ClienteDAO {
 		estrutura.setInt(3, cli.getQtddeEstrelas());
 		estrutura.execute();
 		estrutura.close();
-		return "Gravado com sucesso";		
+
+		//Gravar telefone
+		TelefoneDAO dao = new TelefoneDAO();
+		dao.gravar(cli);
+		dao.fechar();
+		
+		return "Gravado com sucesso";	
 	}
 	
 	public Cliente getCliente(int n) throws Exception{
@@ -45,6 +51,11 @@ public class ClienteDAO {
 			cli.setNome(resultado.getString("NM_CLIENTE"));
 			cli.setNumero(resultado.getInt("NR_CLIENTE"));
 			cli.setQtddeEstrelas(resultado.getInt("QT_ESTRELAS"));
+			
+			//Telefone
+			TelefoneDAO dao = new TelefoneDAO ();
+			cli.setFones(dao.consultarPorCliente(resultado.getInt("NR_CLIENTE")));
+			dao.fechar();
 		}
 		
 		resultado.close();
@@ -53,6 +64,14 @@ public class ClienteDAO {
 	}
 	
 	public int delete(int num) throws Exception{
+		
+		//Telefone
+		TelefoneDAO dao = new TelefoneDAO();
+		dao.deletarPorCliente(num);
+		dao.fechar();
+		//Telefone
+		
+		
 		PreparedStatement estrutura = con.prepareStatement
 				("DELETE FROM cliente WHERE id_cliente = ?");
 		estrutura.setInt(1, num);
@@ -82,10 +101,17 @@ public class ClienteDAO {
 			obj.setNome(resultado.getString("NM_CLIENTE"));
 			obj.setNumero(resultado.getInt("NR_CLIENTE"));
 			obj.setQtddeEstrelas(resultado.getInt("QT_ESTRELAS"));
+			//Telefone
+			TelefoneDAO dao = new TelefoneDAO ();
+			obj.setFones(dao.consultarPorCliente(resultado.getInt("NR_CLIENTE")));
+			dao.fechar();
+			//Fim telefone
 			lista.add(obj);
 		}
 		resultado.close();
 		estrutura.close();
 		return lista;
 	}
+	
+	
 }
